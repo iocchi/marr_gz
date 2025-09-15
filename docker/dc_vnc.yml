@@ -1,0 +1,37 @@
+version: "2.3"
+services:
+
+  xserver:
+    image: devrt/xserver
+    container_name: xserver
+    ipc: host
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - DISPLAY=:9
+    ports:
+      - "3000:80"
+
+  marr_gz:
+    image: marr_gz
+    container_name: marr_gz
+    runtime: runc
+    dns: 8.8.8.8
+    network_mode: "host"
+    security_opt:
+      - seccomp:unconfined
+    tty: true
+    environment:
+      - DISPLAY=:9
+    volumes_from:
+      - xserver
+    depends_on:
+      - xserver
+    volumes:
+      - $PWD/../marr_gz:/opt/marr_gz
+
+#    privileged: true
+
+
+
+

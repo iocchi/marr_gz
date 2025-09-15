@@ -1,0 +1,21 @@
+services:
+
+  marr_gz:
+    image: marr_gz
+    container_name: marr_gz
+    runtime: ${DOCKER_RUNTIME}
+    dns: 8.8.8.8
+    network_mode: "host"
+    tty: true
+    environment:
+      - DISPLAY=$DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      - /dev/dri/:/dev/dri/
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:/home/robot/.Xauthority
+      - $PWD/../marr_gz:/opt/marr_gz
+
+

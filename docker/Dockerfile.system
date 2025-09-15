@@ -1,0 +1,49 @@
+# Docker file for MARR ROS2 gazebo simulation environment
+# ROS2 Jazzy Gazebo Harmonic
+# System image
+
+FROM ros:jazzy-ros-base-noble
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+###### User root ######
+
+# install libraries and ros packages 
+
+RUN apt update && apt install -y --no-install-recommends \
+        tmux less sudo eom nano curl \
+        openssl shellinabox netcat-openbsd \
+        wget iputils-ping net-tools openssh-client nginx \
+        libwebsockets-dev
+        
+
+# ROS packages
+
+RUN apt update && apt install -y --no-install-recommends \
+        ros-${ROS_DISTRO}-turtlesim  ~nros-${ROS_DISTRO}-rqt* \
+        ros-${ROS_DISTRO}-ros-gz ros-${ROS_DISTRO}-ros-gz-sim ros-${ROS_DISTRO}-gz-ros2-control \
+        ros-${ROS_DISTRO}-gz-ros2-control-demos \
+        ros-${ROS_DISTRO}-ros2-control ros-${ROS_DISTRO}-ros2-control-cmake \
+        ros-${ROS_DISTRO}-ros2-controllers ros-${ROS_DISTRO}-controller-manager \
+        ros-${ROS_DISTRO}-tf-transformations
+
+
+RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list && \
+    wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add - 
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        libgz-sim8-dev 
+
+
+
+# Clean apt 
+# RUN apt clean && \
+#     rm -rf /var/lib/apt/lists/*
+
+
+WORKDIR /opt
+
+CMD [ "/usr/bin/tmux" ]
+
+

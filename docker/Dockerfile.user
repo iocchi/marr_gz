@@ -1,0 +1,85 @@
+# Docker file for MARR ROS2 gazebo simulation environment
+
+# User image
+
+FROM marr_gz:system
+
+ARG UID=1000
+ARG GID=1000
+
+USER root
+
+# User: robot (password: robot) with sudo power
+
+RUN deluser ubuntu
+
+RUN useradd -ms /bin/bash robot && echo "robot:robot" | chpasswd && adduser robot sudo
+
+RUN usermod -u $UID robot && groupmod -g $GID robot || true
+RUN chown -R robot:robot /home/robot
+
+RUN adduser robot audio
+RUN adduser robot video
+RUN adduser robot dialout
+RUN adduser robot sudo
+
+RUN chown -R robot:robot /opt
+
+USER robot
+
+RUN echo "set -g mouse on" > $HOME/.tmux.conf 
+RUN touch ~/.sudo_as_admin_successful
+
+
+# Set up .bashrc
+
+USER robot
+
+RUN echo "export ROS_DOMAIN_ID=5" >> ~/.bashrc
+
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> $HOME/.bashrc
+
+
+
+
+# ROS2 workspace
+
+USER robot
+
+RUN  mkdir -p $HOME/ros2_ws/src && cd $HOME/ros2_ws
+
+# MARR_gz robot models
+
+ADD marr_gz /opt/marr_gz
+
+RUN cd ~/ros2_ws/src && ln -s /opt/marr_gz .
+
+RUN bash -ci "cd ~/ros2_ws && colcon build"
+
+RUN bash -ci "source ~/ros2_ws/install/setup.bash &&  echo \"source ~/ros2_ws/install/setup.bash\" >> ~/.bashrc && echo \"export GZ_SIM_RESOURCE_PATH=\$GZ_SIM_RESOURCE_PATH:/opt/marr_gz/models:/opt/marr_gz/worlds\"  >> ~/.bashrc  &&  echo \"export GZ_SIM_SYSTEM_PLUGIN_PATH=\$GZ_SIM_SYSTEM_PLUGIN_PATH:/opt/ros/jazzy/lib\" >> ~/.bashrc"
+
+
+
+
+RUN cd /home/robot/ros2_ws &&  rosdep update
+
+
+USER root
+ 
+RUN cd /home/robot/ros2_ws && rosdep install --ignore-src --from-paths src -y
+
+USER robot
+
+RUN bash -ci "cd ~/ros2_ws && colcon build --symlink-install"
+
+USER root
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+USER robot
+
+WORKDIR /home/robot
+
+CMD [ "/usr/bin/tmux" ]
+
+
