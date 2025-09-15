@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+<robot name="reacher5" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:arg name="namespace" default="" />
+  <xacro:arg name="dof" default="2" />
+  <xacro:arg name="use_imu" default="false" />
+  <xacro:arg name="use_lidar" default="false" />
+  <xacro:arg name="use_rgb" default="false" />
+  <xacro:arg name="use_rgbd" default="false" />
+
+  <xacro:include filename="$(find marr_gz)/urdf/inertia.xacro" />
+  <xacro:include filename="$(find marr_gz)/urdf/sensors.xacro" />
+ 
+  <xacro:property name="base_mass" value="3.0" />
+
+  <xacro:property name="arm_radius" value="0.02" />
+  <xacro:property name="arm_length" value="0.3" />
+  <xacro:property name="arm_mass" value="0.10" />
+
+  <xacro:property name="j_radius" value="0.04" />
+ 
+  <xacro:property name="friction" value="0.01" />
+  <xacro:property name="damping" value="0.05" />
+  <xacro:property name="max_effort" value="1000.0" />
+  <xacro:property name="max_velocity" value="10.0" />
+
+  <xacro:include filename="reacher_base.urdf.xacro" />
+
+  <!-- Links -->
+  
+  <link name="base_footprint"/>  
+
+  <xacro:base_link name="base_link" />
+
+  <xacro:if value="${$(arg dof) == 2 or $(arg dof) == 3}">  
+    <xacro:arm_link name="arm_link1" radius="${arm_radius}" length="${arm_length}" mass="${arm_mass}" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 4 or $(arg dof) == 5 or $(arg dof) == 6}">  
+    <xacro:arm_link_v name="arm_link1" radius="${arm_radius}" length="0.1" mass="${arm_mass}" />
+  </xacro:if>
+
+  <xacro:arm_link name="arm_link2" radius="${arm_radius}" length="${arm_length}" mass="${arm_mass}" />
+  <xacro:if value="${$(arg dof) > 2}">
+    <xacro:arm_link name="arm_link3" radius="${arm_radius}" length="${arm_length}" mass="${arm_mass}" />
+  </xacro:if>
+  <xacro:if value="${$(arg dof) > 3}">
+    <xacro:arm_link name="arm_link4" radius="${arm_radius}" length="${arm_length}" mass="${arm_mass}" />
+  </xacro:if>
+  <xacro:if value="${$(arg dof) > 4}">
+    <xacro:arm_link name="arm_link5" radius="${arm_radius}" length="${arm_length}" mass="${arm_mass}" />
+  </xacro:if>
+  <xacro:if value="${$(arg dof) > 5}">
+    <xacro:arm_link name="arm_link6" radius="${arm_radius}" length="${arm_length}" mass="${arm_mass}" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 2}">
+    <xacro:arm_joint_link_z name="arm_joint_link1" radius="${j_radius}" />  
+    <xacro:arm_joint_link_z name="arm_joint_link2" radius="${j_radius}" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 3}">
+    <xacro:arm_joint_link_z name="arm_joint_link1" radius="${j_radius}" />  
+    <xacro:arm_joint_link_z name="arm_joint_link2" radius="${j_radius}" />
+    <xacro:arm_joint_link_z name="arm_joint_link3" radius="${j_radius}" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 4}">
+    <xacro:arm_joint_link_z name="arm_joint_link1" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link2" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link3" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link4" radius="${j_radius}" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 5}">
+    <xacro:arm_joint_link_z name="arm_joint_link1" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link2" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link3" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link4" radius="${j_radius}" />
+    <xacro:arm_joint_link_x name="arm_joint_link5" radius="${j_radius}" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 6}">
+    <xacro:arm_joint_link_z name="arm_joint_link1" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link2" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link3" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link4" radius="${j_radius}" />
+    <xacro:arm_joint_link_y name="arm_joint_link5" radius="${j_radius}" />
+    <xacro:arm_joint_link_x name="arm_joint_link6" radius="${j_radius}" />
+  </xacro:if>
+
+  <xacro:tip_link name="tip_link" />
+
+  <!-- Joints -->
+
+  <xacro:fixed_joint name="base_joint" parent="base_footprint" child="base_link" x="0" z="0" />
+
+  <xacro:if value="${$(arg dof) == 2}">
+    <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
+     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+   <xacro:revolute_joint_z name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
+     x="${arm_length/2}" z="0" lower="${-7/8*pi}" upper="${7/8*pi}" />
+    <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="tip_joint" parent="arm_link2" child="tip_link" x="${arm_length/2}" z="0" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 3}">
+    <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
+     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+    <xacro:revolute_joint_z name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_z name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint3b" parent="arm_joint_link3" child="arm_link3" x="${arm_length/2}" z="0" />
+  <xacro:fixed_joint name="tip_joint" parent="arm_link3" child="tip_link" x="${arm_length/2}" z="0" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 4}">
+    <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
+     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+    <xacro:revolute_joint_y name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
+     x="0" z="0.05" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_y name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_x name="arm_joint4" parent="arm_link3" child="arm_joint_link4" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="0" z="0.05" />
+    <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint3b" parent="arm_joint_link3" child="arm_link3" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint4b" parent="arm_joint_link4" child="arm_link4" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="tip_joint" parent="arm_link4" child="tip_link" x="${arm_length/2}" z="0" />
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 5}">
+    <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
+     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+    <xacro:revolute_joint_y name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
+     x="0" z="0.05" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_y name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_y name="arm_joint4" parent="arm_link3" child="arm_joint_link4" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_x name="arm_joint5" parent="arm_link4" child="arm_joint_link5" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="0" z="0.05" />
+    <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint3b" parent="arm_joint_link3" child="arm_link3" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint4b" parent="arm_joint_link4" child="arm_link4" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint5b" parent="arm_joint_link5" child="arm_link5" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="tip_joint" parent="arm_link5" child="tip_link" x="${arm_length/2}" z="0" />  
+  </xacro:if>
+
+  <xacro:if value="${$(arg dof) == 6}">
+    <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
+     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+    <xacro:revolute_joint_y name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
+     x="0" z="0.05" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_y name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_y name="arm_joint4" parent="arm_link3" child="arm_joint_link4" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_y name="arm_joint5" parent="arm_link4" child="arm_joint_link5" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:revolute_joint_x name="arm_joint6" parent="arm_link5" child="arm_joint_link6" 
+     x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
+    <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="0" z="0.05" />
+    <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint3b" parent="arm_joint_link3" child="arm_link3" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint4b" parent="arm_joint_link4" child="arm_link4" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint5b" parent="arm_joint_link5" child="arm_link5" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="arm_joint6b" parent="arm_joint_link6" child="arm_link6" x="${arm_length/2}" z="0" />
+    <xacro:fixed_joint name="tip_joint" parent="arm_link6" child="tip_link" x="${arm_length/2}" z="0" />
+  </xacro:if>
+
+  <!-- sensors -->
+  
+  <xacro:if value="$(arg use_imu)">
+    <xacro:imu parent="tip_link" x="-0.1" y="0.0" z="0.152" />
+  </xacro:if>
+  
+  <xacro:if value="$(arg use_lidar)">
+    <xacro:lidar parent="tip_link" x="0.1" y="0.0" z="0.155" />
+  </xacro:if>
+
+  <xacro:if value="$(arg use_rgb)">
+    <xacro:rgb parent="tip_link" x="0.1" y="0.0" z="0.5" />
+  </xacro:if>
+
+  <xacro:if value="$(arg use_rgbd)">
+    <xacro:rgbd parent="tip_link" x="0.1" y="0.0" z="0.5" />
+  </xacro:if>
+
+
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+
+    <joint name="arm_joint1">
+      <command_interface name="effort">
+        <param name="min">-${max_effort}</param>
+        <param name="max">${max_effort}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-${max_velocity}</param>
+        <param name="max">${max_velocity}</param>
+      </command_interface>
+      <command_interface name="position">
+        <param name="min">-${pi/2}</param>
+        <param name="max">${pi/2}</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <joint name="arm_joint2">
+      <command_interface name="effort">
+        <param name="min">-${max_effort}</param>
+        <param name="max">${max_effort}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-${max_velocity}</param>
+        <param name="max">${max_velocity}</param>
+      </command_interface>
+      <command_interface name="position">
+        <param name="min">-${pi/2}</param>
+        <param name="max">${pi/2}</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+
+    <xacro:if value="${$(arg dof) > 2}">
+    <joint name="arm_joint3">
+      <command_interface name="effort">
+        <param name="min">-${max_effort}</param>
+        <param name="max">${max_effort}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-${max_velocity}</param>
+        <param name="max">${max_velocity}</param>
+      </command_interface>
+      <command_interface name="position">
+        <param name="min">-${pi/2}</param>
+        <param name="max">${pi/2}</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    </xacro:if>
+
+    <xacro:if value="${$(arg dof) > 3}">
+    <joint name="arm_joint4">
+      <command_interface name="effort">
+        <param name="min">-${max_effort}</param>
+        <param name="max">${max_effort}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-${max_velocity}</param>
+        <param name="max">${max_velocity}</param>
+      </command_interface>
+      <command_interface name="position">
+        <param name="min">-${pi/2}</param>
+        <param name="max">${pi/2}</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    </xacro:if>
+
+    <xacro:if value="${$(arg dof) > 4}">
+    <joint name="arm_joint5">
+      <command_interface name="effort">
+        <param name="min">-${max_effort}</param>
+        <param name="max">${max_effort}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-${max_velocity}</param>
+        <param name="max">${max_velocity}</param>
+      </command_interface>
+      <command_interface name="position">
+        <param name="min">-${pi/2}</param>
+        <param name="max">${pi/2}</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    </xacro:if>
+
+    <xacro:if value="${$(arg dof) > 5}">
+    <joint name="arm_joint6">
+      <command_interface name="effort">
+        <param name="min">-${max_effort}</param>
+        <param name="max">${max_effort}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-${max_velocity}</param>
+        <param name="max">${max_velocity}</param>
+      </command_interface>
+      <command_interface name="position">
+        <param name="min">-${pi/2}</param>
+        <param name="max">${pi/2}</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    </xacro:if>
+
+  </ros2_control>
+
+  <gazebo>
+    <!-- Joint state publisher -->
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <ros>
+        <namespace>$(arg namespace)</namespace>
+      </ros>
+      <parameters>$(find marr_gz)/config/reacher$(arg dof)_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
+  
+</robot>
+

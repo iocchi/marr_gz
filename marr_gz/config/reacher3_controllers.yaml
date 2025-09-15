@@ -1,0 +1,45 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 10  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_effort_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    arm_velocity_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    arm_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+
+
+arm_effort_controller:
+  ros__parameters:
+    type: forward_command_controller/ForwardCommandController
+    interface_name: effort
+    joints:
+      - arm_joint1
+      - arm_joint2
+      - arm_joint3
+
+arm_velocity_controller:
+  ros__parameters:
+    type: forward_command_controller/ForwardCommandController
+    interface_name: velocity
+    joints:
+      - arm_joint1
+      - arm_joint2
+      - arm_joint3
+
+arm_position_controller:
+  ros__parameters:
+    type: forward_command_controller/ForwardCommandController
+    interface_name: position
+    joints:
+      - arm_joint1
+      - arm_joint2
+      - arm_joint3
+      

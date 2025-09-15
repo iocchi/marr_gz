@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<robot name="arms" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <xacro:macro name="arms">
+
+      <xacro:property name="arm_radius" value="0.02" />
+      <xacro:property name="arm_length" value="0.2" />
+      <xacro:property name="arm_mass" value="0.05" />
+
+      <xacro:property name="arm_friction" value="0.01" />
+      <xacro:property name="arm_damping" value="0.02" />
+
+      <xacro:property name="arm_lower_limit" value="${-5*pi/4}" />
+      <xacro:property name="arm_upper_limit" value="${pi/4}" />
+      <xacro:property name="arm_max_effort" value="100" />
+      <xacro:property name="arm_max_velocity" value="1.0" />
+
+      <link name="left_arm_body">
+        <visual>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="${2*arm_radius+0.04}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <material name="green"/>
+        </visual>
+        <collision>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="0.01"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder_inertial mass="${arm_mass/10}" radius="${arm_radius}" length="0.01"/>
+      </link>
+
+      <link name="left_arm">
+        <visual>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="${arm_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+            <material name="blue"/>  
+        </visual>
+        <collision>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="${arm_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+        </collision>
+        <xacro:cylinder_inertial mass="${arm_mass}" radius="${arm_radius}" length="${arm_length}"/>
+      </link>
+
+      <!-- link name="left_arm_tip">
+        <visual>
+            <geometry>
+                <cylinder radius="${arm_radius}" length="0.01"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+            <material name="black"/>  
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${arm_radius}" length="0.01"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+        </collision>
+        <xacro:cylinder_inertial mass="0.01" radius="${arm_radius}" length="0.01"/>
+      </link -->
+
+      <link name="right_arm_body">
+        <visual>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="${2*arm_radius+0.04}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <material name="green"/>
+        </visual>
+        <collision>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="0.01"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder_inertial mass="${arm_mass/10}" radius="${arm_radius}" length="0.01"/>
+      </link>
+
+      <link name="right_arm">
+        <visual>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="${arm_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+            <material name="blue"/>  
+        </visual>
+        <collision>
+            <geometry>      
+                <cylinder radius="${arm_radius}" length="${arm_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+        </collision>
+        <xacro:cylinder_inertial mass="${arm_mass}" radius="${arm_radius}" length="${arm_length}"/>
+      </link>
+
+
+      <joint name="left_arm_joint" type="revolute">
+        <parent link="base_link"/>
+        <child link="left_arm_body"/>
+        <origin xyz="0.1 ${0.221+arm_radius} 0.07" rpy="0 0 0"/>  
+        <axis xyz="0.0 1.0 0.0"/>
+        <dynamics friction="${arm_friction}" damping="${arm_damping}" />
+        <limit lower="${arm_lower_limit}" upper="${arm_upper_limit}"
+            effort="${arm_max_effort}" velocity="${arm_max_velocity}"/>
+      </joint>
+
+      <joint name="left_arm_body_joint" type="fixed">
+        <parent link="left_arm_body"/>
+        <child link="left_arm"/>
+        <origin xyz="${arm_length/2} 0.02 0.0" rpy="0 0.0 0.0"/>
+      </joint>
+
+      <!-- joint name="left_arm_tip_joint" type="fixed">
+        <parent link="left_arm"/>
+        <child link="left_arm_tip"/>
+        <origin xyz="${arm_length/2} 0.0 0.0" rpy="0 0.0 0.0"/>
+      </joint -->
+
+      <joint name="right_arm_joint" type="revolute">
+        <parent link="base_link"/>
+        <child link="right_arm_body"/>
+        <origin xyz="0.1 ${-(0.221+arm_radius)} 0.07" rpy="0 0 0"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <dynamics friction="${arm_friction}" damping="${arm_damping}" />
+        <limit lower="${arm_lower_limit}" upper="${arm_upper_limit}"
+            effort="${arm_max_effort}" velocity="${arm_max_velocity}"/>
+      </joint>
+
+      <joint name="right_arm_body_joint" type="fixed">
+        <parent link="right_arm_body"/>
+        <child link="right_arm"/>
+        <origin xyz="${arm_length/2} -0.02 0.0" rpy="0 0.0 0.0"/>  
+      </joint>
+      
+  </xacro:macro>
+
+</robot>
+

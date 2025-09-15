@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot name="pantilt" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <xacro:macro name="pantilt" params="parent x y z">
+
+    <link name="pantilt_base_link">
+
+    </link>
+
+    <link name="pantilt_tip_link">
+
+    </link>
+
+    <joint name="pantilt_base_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="pantilt_base_link"/>
+      <origin xyz="${x} ${y} ${z}" rpy="0.0 0.0 0.0"/>
+    </joint>
+ 
+  </xacro:macro>
+
+</robot>
+

@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<robot name="ddrive_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:macro name="imu" params="parent x y z">
+      <link name="imu_link">
+        <visual>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <geometry>
+            <box size="0.04 0.04 0.02"/>
+          </geometry>
+          <material name="green"/> 
+        </visual>
+      </link>
+      
+      <joint name="imu_joint" type="fixed">
+        <parent link="${parent}"/>
+        <child link="imu_link"/>
+        <origin xyz="${x} ${y} ${z}" rpy="0.0 0.0 0.0"/>
+      </joint>
+
+      <gazebo>
+        <plugin filename="gz-sim-imu-system"
+          name="gz::sim::systems::Imu">
+        </plugin>
+      </gazebo>
+
+      <gazebo reference="imu_link">
+        <sensor name="imu" type="imu">
+          <always_on>1</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>imu</topic>
+          <enable_metrics>true</enable_metrics>
+        </sensor>
+      </gazebo>
+
+    </xacro:macro>  
+
+
+    <xacro:macro name="lidar" params="parent x y z">
+      <link name="lidar_link">
+        <visual>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <geometry>      
+            <cylinder radius="0.06" length="0.05"/>
+          </geometry>
+          <material name="white"/>  
+        </visual>
+      </link>
+
+      <joint name="lidar_joint" type="fixed">
+        <parent link="${parent}"/>
+        <child link="lidar_link"/>
+        <origin xyz="${x} ${y} ${z}" rpy="0.0 0.0 0.0"/>
+      </joint>
+      
+      <gazebo reference="lidar_link">
+        <sensor name="lidar" type="gpu_lidar">
+          <pose relative_to='lidar_link'>0 0 0.06 0 0 0</pose>
+          <always_on>1</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>scan</topic>
+          <gz_frame_id>lidar_link</gz_frame_id>  <!-- ignore warning not defined in SDF -->
+          <ray>
+            <scan>
+                <horizontal>
+                    <samples>640</samples>
+                    <resolution>1</resolution>
+                    <min_angle>${-pi*5/4}</min_angle>
+                    <max_angle>${pi*5/4}</max_angle>
+                </horizontal>
+                <vertical>
+                    <samples>1</samples>
+                    <resolution>0.01</resolution>
+                    <min_angle>0</min_angle>
+                    <max_angle>0</max_angle>
+                </vertical>
+            </scan>
+            <range>
+                <min>0.05</min>
+                <max>10.0</max>
+                <resolution>0.01</resolution>
+            </range>
+          </ray>
+        </sensor>
+      </gazebo>
+  
+    </xacro:macro>
+
+    <xacro:macro name="rgb" params="parent x y z">
+
+
+    </xacro:macro>
+
+
+
+    <xacro:macro name="rgbd" params="parent x y z">
+
+
+    </xacro:macro>
+
+</robot>
+

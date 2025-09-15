@@ -1,0 +1,10 @@
+robot: 
+  base: [wheeled|reacher]
+  dof: [2..6]            # dof of reacher base
+  arms: [false|true]     # side arms for wheeled base
+  pantilt: [false|true]  # pan-tilt for wheeled base (camera will be mounted here)
+  imu: [false|true]      # for both wheeled and reacher
+  lidar: [false|true]    # for both wheeled and reacher
+  camera: [false|rgb|rgbd]  # for both wheeled and reacher
+  arms_control_interface: [effort|velocity|control]   # reacher and wheeled arms
+
