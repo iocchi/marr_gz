@@ -2,11 +2,9 @@
 
 UPAR="--build-arg UID=`id -u` --build-arg GID=`id -g`"
 
-NOCACHE=""
-if [ "$1" == "no-cache" ]; then
-  NOCACHE="--no-cache"
-fi
+cd ..
 
-docker build $NOCACHE -t marr_gz:system -f Dockerfile.system . && \
-docker build $NOCACHE $UPAR -t marr_gz -f Dockerfile.user .
+docker pull iocchi/marr_gz:system
+docker tag iocchi/marr_gz:system marr_gz:system
+docker build $UPAR -t marr_gz -f docker/Dockerfile.user .
 

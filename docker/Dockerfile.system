@@ -35,6 +35,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         libgz-sim8-dev 
 
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 
 # Clean apt 
