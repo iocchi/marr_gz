@@ -50,21 +50,21 @@ https://docs.docker.com/compose/install/linux/
 
 # Build
 
-## Option 1: build images
+## Standard procedure
+
+Pull the system image and build the user image
 
     cd docker
     ./build.bash
     
-In case of problems with building the image (possibly due to updates in the apt keys),
+
+# Building from scratch
+
+In case of problems with building the image (due to updates in the apt keys, libraries, etc.),
 update the docker images and build from scratch (it will take time and bandwidth!)
 
-    docker pull ros:jazzy-ros-base-noble
-    ./build.bash no-cache
-
-# Option 2: pull images from dockerhub
-
     cd docker
-    ./pull.bash
+    ./build_from_scratch.bash
 
 
 # Run
@@ -112,7 +112,7 @@ Note: you can create many config launch files for different configurations.
 
 Launch the simulator and ROS nodes
 
-    cd /opt/marr_gz/scripts
+    cd marr_gz/scripts
     python marr_launch.py ../config/my_launch.yaml
 
 
@@ -182,7 +182,7 @@ Launch a wheeled robot (it will automatically launch a diffdrive controller)
     ros2 launch marr_gz marr_robot.launch.py robot_type:=wheeled
 
 Run the test control (on another window terminal - use `Ctrl-b c` in tmux to create a new window)
-    cd /opt/marr_gz/script
+    cd marr_gz/script
     python test_control.py wheeled_diffdrive 
 
 ## reacher robot
@@ -193,7 +193,7 @@ Launch a reacher robot with any control interface and run the test
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=reacher dof:=2 control_interface:=position
 
-    cd /opt/marr_gz/script
+    cd marr_gz/script
     python test_control.py arm_position 
 
 
@@ -201,7 +201,7 @@ Launch a reacher robot with any control interface and run the test
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=reacher dof:=2 control_interface:=velocity
 
-    cd /opt/marr_gz/script
+    cd marr_gz/script
     python test_control.py arm_velocity
 
 
@@ -209,7 +209,7 @@ Launch a reacher robot with any control interface and run the test
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=reacher dof:=2 control_interface:=effort
 
-    cd /opt/marr_gz/script
+    cd marr_gz/script
     python test_control.py arm_effort
    
 

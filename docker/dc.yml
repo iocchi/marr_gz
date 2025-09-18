@@ -16,6 +16,6 @@ services:
       - /dev/dri/:/dev/dri/
       - /tmp/.X11-unix:/tmp/.X11-unix
       - $HOME/.Xauthority:/home/robot/.Xauthority
-      - $PWD/../marr_gz:/opt/marr_gz
+      - $PWD/../marr_gz:/home/robot/marr_gz
 
 
