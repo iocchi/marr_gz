@@ -66,18 +66,6 @@ ddrive_controller:
     angular.z.min_jerk: 0.0
 
 
-arm_effort_controller_old:
-  ros__parameters:
-    type: effort_controllers/JointGroupEffortController
-    joints:
-      - left_arm_joint
-      - right_arm_joint
-    command_interfaces:
-      - effort
-    state_interfaces:
-      - position
-      - velocity
-
 arm_effort_controller:
   ros__parameters:
     type: forward_command_controller/ForwardCommandController
