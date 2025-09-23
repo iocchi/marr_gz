@@ -17,6 +17,7 @@ controller_manager:
     arm_position_controller:
       type: forward_command_controller/ForwardCommandController
 
+
 ddrive_controller:
   ros__parameters:
     type: diff_drive_controller/DiffDriveController
@@ -89,5 +90,6 @@ arm_position_controller:
     joints:
       - left_arm_joint
       - right_arm_joint
+
 
 

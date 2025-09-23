@@ -62,7 +62,7 @@ def generate_launch_description():
 
     control_interface_arg = DeclareLaunchArgument(
         'control_interface',
-        default_value=TextSubstitution(text='effort'),
+        default_value=TextSubstitution(text='position'),
         description='control interface [effort|velocity|position]'
     )
 
@@ -194,11 +194,22 @@ def generate_launch_description():
         condition=IfCondition(has_arms),
     )
 
-    pantilt_controller_spawner = Node(
+    pan_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
         arguments=[
-            PythonExpression( ["'pantilt_", control_interface, "_controller'" ] ),
+            PythonExpression( ["'pan_", control_interface, "_controller'" ] ),
+            '--param-file',
+            pantilt_controllers,
+            ],
+        condition=IfCondition(pantilt),
+    )
+
+    tilt_controller_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            PythonExpression( ["'tilt_", control_interface, "_controller'" ] ),
             '--param-file',
             pantilt_controllers,
             ],
@@ -272,7 +283,7 @@ def generate_launch_description():
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=joint_state_broadcaster_spawner,
-                on_exit=[ddrive_controller_spawner, arm_controller_spawner, pantilt_controller_spawner],
+                on_exit=[ddrive_controller_spawner, arm_controller_spawner, pan_controller_spawner, tilt_controller_spawner],
             )
         ),
         RegisterEventHandler(

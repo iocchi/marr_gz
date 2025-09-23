@@ -11,15 +11,17 @@
       <xacro:property name="arm_friction" value="0.01" />
       <xacro:property name="arm_damping" value="0.02" />
 
-      <xacro:property name="arm_lower_limit" value="${-5*pi/4}" />
-      <xacro:property name="arm_upper_limit" value="${pi/4}" />
+      <!--xacro:property name="arm_lower_limit" value="${-5*pi/4}" />
+      <xacro:property name="arm_upper_limit" value="${pi/4}" /-->
+      <xacro:property name="arm_lower_limit" value="${-2*pi}" />
+      <xacro:property name="arm_upper_limit" value="${2*pi}" />
       <xacro:property name="arm_max_effort" value="100" />
       <xacro:property name="arm_max_velocity" value="1.0" />
 
       <link name="left_arm_body">
         <visual>
             <geometry>      
-                <cylinder radius="${arm_radius}" length="${2*arm_radius+0.04}"/>
+                <cylinder radius="${arm_radius}" length="${2*arm_radius+0.08}"/>
             </geometry>
             <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
             <material name="green"/>
@@ -70,7 +72,7 @@
       <link name="right_arm_body">
         <visual>
             <geometry>      
-                <cylinder radius="${arm_radius}" length="${2*arm_radius+0.04}"/>
+                <cylinder radius="${arm_radius}" length="${2*arm_radius+0.08}"/>
             </geometry>
             <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
             <material name="green"/>
@@ -115,7 +117,7 @@
       <joint name="left_arm_body_joint" type="fixed">
         <parent link="left_arm_body"/>
         <child link="left_arm"/>
-        <origin xyz="${arm_length/2} 0.02 0.0" rpy="0 0.0 0.0"/>
+        <origin xyz="${arm_length/2} 0.04 0.0" rpy="0 0.0 0.0"/>
       </joint>
 
       <!-- joint name="left_arm_tip_joint" type="fixed">
@@ -137,7 +139,7 @@
       <joint name="right_arm_body_joint" type="fixed">
         <parent link="right_arm_body"/>
         <child link="right_arm"/>
-        <origin xyz="${arm_length/2} -0.02 0.0" rpy="0 0.0 0.0"/>  
+        <origin xyz="${arm_length/2} -0.04 0.0" rpy="0 0.0 0.0"/>  
       </joint>
       
   </xacro:macro>

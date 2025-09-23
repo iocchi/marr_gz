@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot name="reacher5" xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <gazebo>
+      <self_collide>true</self_collide>
+  </gazebo>
+    
   <xacro:arg name="namespace" default="" />
   <xacro:arg name="dof" default="2" />
   <xacro:arg name="use_imu" default="false" />
@@ -11,7 +15,7 @@
   <xacro:include filename="$(find marr_gz)/urdf/inertia.xacro" />
   <xacro:include filename="$(find marr_gz)/urdf/sensors.xacro" />
  
-  <xacro:property name="base_mass" value="3.0" />
+  <xacro:property name="base_mass" value="5.0" />
 
   <xacro:property name="arm_radius" value="0.02" />
   <xacro:property name="arm_length" value="0.3" />
@@ -77,7 +81,7 @@
     <xacro:arm_joint_link_y name="arm_joint_link2" radius="${j_radius}" />
     <xacro:arm_joint_link_y name="arm_joint_link3" radius="${j_radius}" />
     <xacro:arm_joint_link_y name="arm_joint_link4" radius="${j_radius}" />
-    <xacro:arm_joint_link_x name="arm_joint_link5" radius="${j_radius}" />
+    <xacro:arm_joint_link_z name="arm_joint_link5" radius="${j_radius}" />
   </xacro:if>
 
   <xacro:if value="${$(arg dof) == 6}">
@@ -86,18 +90,18 @@
     <xacro:arm_joint_link_y name="arm_joint_link3" radius="${j_radius}" />
     <xacro:arm_joint_link_y name="arm_joint_link4" radius="${j_radius}" />
     <xacro:arm_joint_link_y name="arm_joint_link5" radius="${j_radius}" />
-    <xacro:arm_joint_link_x name="arm_joint_link6" radius="${j_radius}" />
+    <xacro:arm_joint_link_z name="arm_joint_link6" radius="${j_radius}" />
   </xacro:if>
 
   <xacro:tip_link name="tip_link" />
 
   <!-- Joints -->
 
-  <xacro:fixed_joint name="base_joint" parent="base_footprint" child="base_link" x="0" z="0" />
+  <xacro:fixed_joint name="base_joint" parent="base_link" child="base_footprint" x="0" z="-0.05" />
 
   <xacro:if value="${$(arg dof) == 2}">
     <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
-     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+     x="0" z="${0.1+0.025}" lower="${-pi}" upper="${pi}" />
    <xacro:revolute_joint_z name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
      x="${arm_length/2}" z="0" lower="${-7/8*pi}" upper="${7/8*pi}" />
     <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="${arm_length/2}" z="0" />
@@ -107,7 +111,7 @@
 
   <xacro:if value="${$(arg dof) == 3}">
     <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
-     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+     x="0" z="${0.1+0.025}" lower="${-pi}" upper="${pi}" />
     <xacro:revolute_joint_z name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
     <xacro:revolute_joint_z name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
@@ -120,12 +124,12 @@
 
   <xacro:if value="${$(arg dof) == 4}">
     <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
-     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+     x="0" z="${0.1+0.025}" lower="${-pi}" upper="${pi}" />
     <xacro:revolute_joint_y name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
      x="0" z="0.05" lower="${-1.8}" upper="${1.8}" />
     <xacro:revolute_joint_y name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
-    <xacro:revolute_joint_x name="arm_joint4" parent="arm_link3" child="arm_joint_link4" 
+    <xacro:revolute_joint_y name="arm_joint4" parent="arm_link3" child="arm_joint_link4" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
     <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="0" z="0.05" />
     <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />
@@ -136,14 +140,14 @@
 
   <xacro:if value="${$(arg dof) == 5}">
     <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
-     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+     x="0" z="${0.1+0.025}" lower="${-pi}" upper="${pi}" />
     <xacro:revolute_joint_y name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
      x="0" z="0.05" lower="${-1.8}" upper="${1.8}" />
     <xacro:revolute_joint_y name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
     <xacro:revolute_joint_y name="arm_joint4" parent="arm_link3" child="arm_joint_link4" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
-    <xacro:revolute_joint_x name="arm_joint5" parent="arm_link4" child="arm_joint_link5" 
+    <xacro:revolute_joint_z name="arm_joint5" parent="arm_link4" child="arm_joint_link5" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
     <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="0" z="0.05" />
     <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />
@@ -155,7 +159,7 @@
 
   <xacro:if value="${$(arg dof) == 6}">
     <xacro:revolute_joint_z name="arm_joint1" parent="base_link" child="arm_joint_link1" 
-     x="0" z="0.1" lower="${-pi}" upper="${pi}" />
+     x="0" z="${0.1+0.025}" lower="${-pi}" upper="${pi}" />
     <xacro:revolute_joint_y name="arm_joint2" parent="arm_link1" child="arm_joint_link2" 
      x="0" z="0.05" lower="${-1.8}" upper="${1.8}" />
     <xacro:revolute_joint_y name="arm_joint3" parent="arm_link2" child="arm_joint_link3" 
@@ -164,7 +168,7 @@
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
     <xacro:revolute_joint_y name="arm_joint5" parent="arm_link4" child="arm_joint_link5" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
-    <xacro:revolute_joint_x name="arm_joint6" parent="arm_link5" child="arm_joint_link6" 
+    <xacro:revolute_joint_z name="arm_joint6" parent="arm_link5" child="arm_joint_link6" 
      x="${arm_length/2}" z="0" lower="${-1.8}" upper="${1.8}" />
     <xacro:fixed_joint name="arm_joint1b" parent="arm_joint_link1" child="arm_link1" x="0" z="0.05" />
     <xacro:fixed_joint name="arm_joint2b" parent="arm_joint_link2" child="arm_link2" x="${arm_length/2}" z="0" />

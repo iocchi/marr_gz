@@ -90,6 +90,37 @@
 
     <xacro:macro name="rgb" params="parent x y z">
 
+      <link name="camera_link">
+        <visual>
+          <origin xyz="0 0 0.05" rpy="0 0 0" />
+          <geometry>
+            <cylinder radius="0.01" length="0.10"/>
+          </geometry>
+          <material name="black"/> 
+        </visual>        
+        <visual>
+          <origin xyz="0.01 0 ${0.10+0.02}" rpy="0 ${pi/2+0.6} 0" />
+          <geometry>
+            <cylinder radius="0.02" length="0.02"/>
+          </geometry>
+          <material name="black"/> 
+        </visual>
+      </link>
+
+      <link name="camera_optical_link" />
+
+      <joint name="camera_joint" type="fixed">
+        <parent link="${parent}"/>
+        <child link="camera_link"/>
+        <origin xyz="0 0.0 0.15" rpy="0.0 0.0 0.0"/>
+      </joint>
+
+      <joint name="camera_optical_joint" type="fixed">
+        <parent link="camera_link"/>
+        <child link="camera_optical_link"/>
+        <origin xyz="0.02 0 ${0.10+0.02}" rpy="0 0.6 0"/>
+      </joint>
+
 
     </xacro:macro>
 

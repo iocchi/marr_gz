@@ -126,7 +126,11 @@ The list of configurable parameters is given by
 
     ros2 launch marr_gz marr_robot.launch.py -s
 
-Example:
+Examples:
+
+    ros2 launch marr_gz marr_robot.launch.py robot_type:=wheeled
+
+    ros2 launch marr_gz marr_robot.launch.py robot_type:=wheeled arms:=True control_interface:=velocity
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=reacher dof:=3 control_interface:=velocity
 
@@ -175,41 +179,68 @@ Check running controllers
 
 # Test controllers
 
-## wheeled robot
+Launch a robot, as described above.
 
-Launch a wheeled robot (it will automatically launch a diffdrive controller)
+Test the controllers of the robot model.
+Run the test control (on another window terminal - use `Ctrl-b c` in tmux to create a new window)
+
+    cd marr_gz/script
+    python test_control.py
+
+You should see all the joints moving.
+
+
+## manual tests
+
+wheeled robot
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=wheeled
 
-Run the test control (on another window terminal - use `Ctrl-b c` in tmux to create a new window)
+test
+
     cd marr_gz/script
-    python test_control.py wheeled_diffdrive 
+    python test_control.py -fn wheeled_diffdrive 
 
-## reacher robot
 
-Launch a reacher robot with any control interface and run the test
+wheeled robot with arms
 
-1. position control interface
+position control interface
+
+    ros2 launch marr_gz marr_robot.launch.py robot_type:=wheeled arms:=True control_interface:=position
+
+test
+
+    cd marr_gz/script
+    python test_control.py -fn arm_position 
+
+
+reacher robot position control interface
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=reacher dof:=2 control_interface:=position
 
+test
+
     cd marr_gz/script
-    python test_control.py arm_position 
+    python test_control.py -fn arm_position 
 
 
-2. velocity control interface
+reacher robot velocity control interface
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=reacher dof:=2 control_interface:=velocity
 
+test
+
     cd marr_gz/script
-    python test_control.py arm_velocity
+    python test_control.py -fn arm_velocity
 
 
-3. effort control interface
+reacher robot effort control interface
 
     ros2 launch marr_gz marr_robot.launch.py robot_type:=reacher dof:=2 control_interface:=effort
 
+test
+
     cd marr_gz/script
-    python test_control.py arm_effort
+    python test_control.py -fn arm_effort
    
 
