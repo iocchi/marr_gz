@@ -61,13 +61,17 @@ if rbase=='wheeled':
 
 elif rbase=='reacher':
 
-    dof = int(rconfig['dof'])
+    try:
+        dof = int(rconfig['dof'])
+    except KeyError:
+        print("Warning!!! Use 'dof' field in config file to set arm dof (default to 2) !!!")
+        dof = 2
     if dof<2 or dof>6:
         print(f"Reacher with {dof} dof not implemented.")
         sys.exit(1)
     dof_arg = f"dof:={dof}"
 
-    launch_cmd = f"ros2 launch marr_gz marr_robot.launch.py {world_file_arg} {robot_type_arg} " + \
+    launch_cmd = f"ros2 launch marr_gz marr_robot.launch.py {world_file_arg} {robot_type_arg} {dof_arg} " + \
       f"{robot_name_arg} {control_interface_arg} {imu_arg} {lidar_arg} " + \
       f"{rgb_arg} {rgbd_arg}" 
 

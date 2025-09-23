@@ -230,9 +230,9 @@ def generate_launch_description():
                    '/world/default/remove@ros_gz_interfaces/srv/DeleteEntity@gz.msgs.Entity@gz.msgs.Boolean',
             '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
-
-#TODO cameras
-
+            '/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/camera/image@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
             ],
         output='screen'
     )

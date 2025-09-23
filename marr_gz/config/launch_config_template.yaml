@@ -6,5 +6,5 @@ robot:
   imu: [false|true]      # for both wheeled and reacher
   lidar: [false|true]    # for both wheeled and reacher
   camera: [false|rgb|rgbd]  # for both wheeled and reacher
-  arms_control_interface: [effort|velocity|control]   # reacher and wheeled arms
+  arms_control_interface: [effort|velocity|position]   # reacher and wheeled arms
 

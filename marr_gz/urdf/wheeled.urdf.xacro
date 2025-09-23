@@ -192,7 +192,8 @@
   </xacro:if>
 
   <xacro:if value="${u_rgb and not u_pantilt}">
-    <xacro:rgb parent="base_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:camera_base parent="base_link" x="0.0" y="0.0" z="0.152" />
+    <xacro:rgb parent="pantilt_tip_link" x="0.1" y="0.0" z="0.5" />
   </xacro:if>
 
   <xacro:if value="${u_rgbd and u_pantilt}">
@@ -200,7 +201,8 @@
   </xacro:if>
 
   <xacro:if value="${u_rgbd and not u_pantilt}">
-    <xacro:rgbd parent="base_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:camera_base parent="base_link" x="0.0" y="0.0" z="0.152" />
+    <xacro:rgbd parent="pantilt_tip_link" x="0.1" y="0.0" z="0.5" />
   </xacro:if>
 
 
@@ -326,5 +328,8 @@
     </gazebo>
   </xacro:if>
 
+
+  
+  
 </robot>
 

@@ -108,5 +108,104 @@
  
   </xacro:macro>
 
+
+  <xacro:macro name="camera_base" params="parent x y z">
+
+    <link name="pantilt_base_link">
+        <visual>
+          <origin xyz="0 0 0.05" rpy="0 0 0" />
+          <geometry>
+            <cylinder radius="0.01" length="0.10"/>
+          </geometry>
+          <material name="black"/> 
+        </visual>        
+        <collision>
+          <origin xyz="0 0 0.05" rpy="0 0 0" />
+          <geometry>
+            <cylinder radius="0.01" length="0.10"/>
+          </geometry>
+        </collision>
+        <xacro:cylinder_inertial mass="0.10" radius="0.01" length="0.10"/> 
+    </link>
+
+    <link name="pan_link">
+        <visual>
+            <geometry>      
+                <cylinder radius="0.01" length="0.01"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>      
+                <cylinder radius="0.01" length="0.01"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder_inertial mass="0.05" radius="0.01" length="0.01"/>
+    </link>
+      
+    <link name="tilt_link">
+        <visual>
+            <geometry>      
+                <cylinder radius="0.01" length="0.014"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <geometry>      
+                <cylinder radius="0.01" length="0.014"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+        </collision>
+        <xacro:cylinder_inertial mass="0.05" radius="0.01" length="0.014"/>
+    </link>
+
+    <link name="pantilt_tip_link">
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <cylinder radius="0.01" length="0.02"/>
+          </geometry>
+          <material name="black"/> 
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <cylinder radius="0.01" length="0.02"/>
+          </geometry>
+          <material name="black"/> 
+        </collision>
+        <xacro:cylinder_inertial mass="0.05" radius="0.01" length="0.02"/>
+    </link>
+
+
+    <joint name="pantilt_base_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="pantilt_base_link"/>
+      <origin xyz="${x} ${y} ${z}" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <joint name="pantilt_pan_joint" type="fixed">
+      <parent link="pantilt_base_link"/>
+      <child link="pan_link"/>
+      <origin xyz="0 0 0.105" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <joint name="pantilt_tilt_joint" type="fixed">
+      <parent link="pan_link"/>
+      <child link="tilt_link"/>
+      <origin xyz="0 0 0.015" rpy="0.0 0.0 0.0"/>
+    </joint>
+
+    <joint name="pantilt_tip_joint" type="fixed">
+      <parent link="tilt_link"/>
+      <child link="pantilt_tip_link"/>
+      <origin xyz="0.02 0 0.0" rpy="0.0 ${pi/2} 0.0"/>
+    </joint>
+ 
+  </xacro:macro>
+
 </robot>
 
