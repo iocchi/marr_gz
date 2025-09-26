@@ -154,14 +154,16 @@ Examples:
 
 ## sensors
 
+On the wheeled base, IMU and lidar are placed on the base, while cameras on the pan-tilt unit, if present, otherwise on a fixed support.
+
 - IMU
 - lidar
 - RGB camera
 - RGBD camera
 
-On the wheeled base, IMU and lidar are placed on the base, while cameras on the pan-tilt unit, if present, otherwise on the base as well.
 
-On the reacher base, sensors are mounted on the end-effector.
+Sensors on the reacher base are not implemented at this time!
+
 
 
 # Controllers
@@ -177,7 +179,7 @@ Check running controllers
 
 
 
-# Test controllers
+## Test controllers
 
 Launch a robot, as described above.
 
@@ -190,7 +192,7 @@ Run the test control (on another window terminal - use `Ctrl-b c` in tmux to cre
 You should see all the joints moving.
 
 
-## manual tests
+## Manual tests
 
 wheeled robot
 
@@ -243,4 +245,16 @@ test
     cd marr_gz/script
     python test_control.py -fn arm_effort
    
+
+# Sensors
+
+Use Rviz to see sensor data
+
+    ros2 run rviz2 rviz2
+    
+Predefined rviz files are available in the `config` folder, e.g.
+
+    cd marr_gz/config
+    ros2 run rviz2 rviz2 -d wheeled.rviz
+
 

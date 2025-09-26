@@ -140,7 +140,8 @@ def generate_launch_description():
         executable='create',
         output='screen',
         arguments=['-topic', 'robot_description',
-                   '-name', robot_type, '-allow_renaming', 'true'],
+                   '-name', robot_type, '-allow_renaming', 'true',
+                   '-z', '0.25', '-Y', '0.00' ],
     )
 
     detach_cmd = ExecuteProcess(
@@ -228,11 +229,15 @@ def generate_launch_description():
         arguments=['/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
                    '/world/default/create@ros_gz_interfaces/srv/SpawnEntity@gz.msgs.EntityFactory@gz.msgs.Boolean',
                    '/world/default/remove@ros_gz_interfaces/srv/DeleteEntity@gz.msgs.Entity@gz.msgs.Boolean',
+            PythonExpression( ["'/model/", robot_type, "/pose@geometry_msgs/msg/PoseStamped[gz.msgs.Pose'"] ), # ground truth
             '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
             '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
             '/scan/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             '/camera/image@sensor_msgs/msg/Image[gz.msgs.Image',
             '/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image',
+            '/camera/depth_camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo',
+            '/camera/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked',
             ],
         output='screen'
     )

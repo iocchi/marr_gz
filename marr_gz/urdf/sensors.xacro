@@ -111,7 +111,7 @@
       <joint name="camera_optical_joint" type="fixed">
         <parent link="camera_link"/>
         <child link="camera_optical_link"/>
-        <origin xyz="0.006 0 0" rpy="0 ${-pi/2} 0"/>
+        <origin xyz="0 0 0.006" rpy="0 ${-pi/2} 0"/>
       </joint>
 
       <gazebo reference="camera_optical_link">
@@ -163,7 +163,7 @@
             <cylinder radius="0.005" length="0.006"/>
           </geometry>
           <material name="grey"/> 
-          <origin xyz="0 0.006 0" rpy="0 0 0" />
+          <origin xyz="0 0 0.006" rpy="0 0 0" />
         </visual>        
       </link>
 
@@ -178,10 +178,59 @@
       <joint name="camera_optical_joint" type="fixed">
         <parent link="camera_link"/>
         <child link="camera_optical_link"/>
-        <origin xyz="0.006 0 0" rpy="0 0.0 0"/>
+        <origin xyz="0 0 0.006" rpy="0 ${-pi/2} 0"/>
       </joint>
 
+     
+      <gazebo reference="camera_optical_link">
+        <sensor name="camera" type="rgbd_camera">
+          <camera>
+            <horizontal_fov>2.0</horizontal_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.001</near>
+              <far>15</far>
+            </clip>
+            <noise>
+              <type>gaussian</type>
+              <!-- Noise is sampled independently per pixel on each frame.
+                   That pixel's noise value is added to each of its color
+                   channels, which at that point lie in the range [0,1]. -->
+              <mean>0.0</mean>
+              <stddev>0.007</stddev>
+            </noise>
+            <!-- camera_info_topic>camera/camera_info</camera_info_topic -->
+          </camera>
+          <depth_camera>
+            <image>
+              <width>640</width>
+              <height>480</height>
+              <format>R_FLOAT32</format>
+              <!-- format>16UC1</format -->
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>10</far>
+            </clip>
+            <point_cloud>
+                <format>xyz</format>
+            </point_cloud>
+          </depth_camera>
+          
+          <always_on>1</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>camera</topic>
 
+          <gz_frame_id>camera_optical_link</gz_frame_id>  <!-- ignore warning not defined in SDF -->
+
+        </sensor>
+      </gazebo>
+ 
     </xacro:macro>
 
 </robot>

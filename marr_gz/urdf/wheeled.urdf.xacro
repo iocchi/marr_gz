@@ -48,6 +48,24 @@
     <xacro:box_inertial mass="0.2" x_dim="0.5" y_dim="0.4" z_dim="0.3"/>
   </link>
 
+  <!-- to balance weight on the bottom and between the wheels -->
+  <link name="battery_link">
+    <visual>
+        <geometry>
+            <box size="0.1 0.2 0.1"/>
+        </geometry>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <material name="black"/>
+    </visual>
+    <collision>
+        <geometry>
+            <box size="0.1 0.2 0.1"/>
+        </geometry>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </collision>
+    <xacro:box_inertial mass="0.5" x_dim="0.1" y_dim="0.2" z_dim="0.1"/>
+  </link>
+      
   <link name="left_wheel">
     <visual>
         <geometry>
@@ -135,7 +153,13 @@
   <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
-    <origin xyz="0.0 0.0 0.50" rpy="0.0 0.0 0.0"/>
+    <origin xyz="-0.1 0.0 0.15" rpy="0.0 0.0 0.0"/>
+  </joint>
+
+  <joint name="battery_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="battery_link"/>
+    <origin xyz="0.1 0.0 -0.08" rpy="0.0 0.0 0.0"/>
   </joint>
 
   
@@ -145,7 +169,7 @@
     <origin xyz="0.1 0.23 -0.1" rpy="0 0.0 0.0"/>  
     <axis xyz="0.0 1.0 0.0"/>
     <dynamics damping="0.2" friction="1.0"/>
-    <limit effort="100" velocity="1.0"/>
+    <limit effort="100" velocity="10.0"/>
   </joint>
 
   <joint name="right_wheel_joint" type="continuous">
@@ -154,7 +178,7 @@
     <origin xyz="0.1 -0.23 -0.1" rpy="0 0.0 0.0"/>  
     <axis xyz="0.0 1.0 0.0"/>
     <dynamics damping="0.2" friction="1.0"/>
-    <limit effort="100" velocity="1.0"/>
+    <limit effort="100" velocity="10.0"/>
   </joint>
 
   <joint name="caster_wheel_joint" type="fixed">
@@ -313,6 +337,16 @@
     </plugin>
   </gazebo>
   
+  <gazebo>
+    <!-- Ground truth publisher -->
+    <plugin
+        filename="gz-sim-pose-publisher-system"
+        name="gz::sim::systems::PosePublisher">
+        <use_pose_vector_msg>false</use_pose_vector_msg>
+        <publish_model_pose>true</publish_model_pose>
+        <publish_nested_model_pose>true</publish_nested_model_pose>
+    </plugin>
+  </gazebo>
 
   <xacro:if value="$(arg use_arms)">
     <gazebo>
