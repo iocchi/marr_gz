@@ -151,27 +151,25 @@ Examples:
 ## actuators
 
 - pan-tilt: for the wheeled base (cameras will be mounted here)
+- amrs: two 1 dof arms for wheeled robot
 
 ## sensors
-
-On the wheeled base, IMU and lidar are placed on the base, while cameras on the pan-tilt unit, if present, otherwise on a fixed support.
 
 - IMU
 - lidar
 - RGB camera
 - RGBD camera
 
+On the wheeled base, IMU and lidar are placed on the base, while cameras on the pan-tilt unit, if present, otherwise on a fixed support.
 
 On the reacher base, sensors are placed on the end-effector.
-
-
 
 # Controllers
 
 Available controllers:
 
-- diffdrive for wheels
-- effort|veocity|position for arms
+- differential drive for wheeled robot
+- effort|veocity|position controllers for arms
 
 Check running controllers
 
@@ -201,7 +199,7 @@ wheeled robot
 test
 
     cd marr_gz/script
-    python test_control.py -fn wheeled_diffdrive 
+    python test_control.py -fn ddrive 
 
 
 wheeled robot with arms
