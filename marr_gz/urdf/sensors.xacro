@@ -88,7 +88,7 @@
   
     </xacro:macro>
 
-    <xacro:macro name="rgb" params="parent x y z">
+    <xacro:macro name="rgb" params="parent x y z p">
 
       <link name="camera_link">
         <visual>
@@ -105,7 +105,7 @@
       <joint name="camera_joint" type="fixed">
         <parent link="${parent}"/>
         <child link="camera_link"/>
-        <origin xyz="0 0 0.013" rpy="0.0 0.0 0.0"/>
+        <origin xyz="${x} ${y} ${z}" rpy="0.0 ${p} 0.0"/>
       </joint>
 
       <joint name="camera_optical_joint" type="fixed">
@@ -148,7 +148,7 @@
 
 
 
-    <xacro:macro name="rgbd" params="parent x y z">
+    <xacro:macro name="rgbd" params="parent x y z p">
 
       <link name="camera_link">
         <visual>
@@ -163,7 +163,7 @@
             <cylinder radius="0.005" length="0.006"/>
           </geometry>
           <material name="grey"/> 
-          <origin xyz="0 0 0.006" rpy="0 0 0" />
+          <origin xyz="0 0.006 0" rpy="0 0 0" />
         </visual>        
       </link>
 
@@ -172,7 +172,7 @@
       <joint name="camera_joint" type="fixed">
         <parent link="${parent}"/>
         <child link="camera_link"/>
-        <origin xyz="0 0 0.013" rpy="0.0 0.0 0.0"/>
+        <origin xyz="${x} ${y} ${z}" rpy="0.0 ${p} 0.0"/>
       </joint>
 
       <joint name="camera_optical_joint" type="fixed">

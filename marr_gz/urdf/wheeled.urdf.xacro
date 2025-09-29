@@ -212,21 +212,21 @@
   <xacro:property name="u_pantilt" value="$(arg use_pantilt)"/>
 
   <xacro:if value="${u_rgb and u_pantilt}">
-    <xacro:rgb parent="pantilt_tip_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:rgb parent="pantilt_tip_link" x="0.0" y="0.0" z="0.013" p="0" />
   </xacro:if>
 
   <xacro:if value="${u_rgb and not u_pantilt}">
     <xacro:camera_base parent="base_link" x="0.0" y="0.0" z="0.152" />
-    <xacro:rgb parent="pantilt_tip_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:rgb parent="pantilt_tip_link" x="0.0" y="0.0" z="0.013" p="0" />
   </xacro:if>
 
   <xacro:if value="${u_rgbd and u_pantilt}">
-    <xacro:rgbd parent="pantilt_tip_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:rgbd parent="pantilt_tip_link" x="0.0" y="0.0" z="0.013" p="0" />
   </xacro:if>
 
   <xacro:if value="${u_rgbd and not u_pantilt}">
     <xacro:camera_base parent="base_link" x="0.0" y="0.0" z="0.152" />
-    <xacro:rgbd parent="pantilt_tip_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:rgbd parent="pantilt_tip_link" x="0.0" y="0.0" z="0.013" p="0" />
   </xacro:if>
 
 

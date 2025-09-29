@@ -105,7 +105,7 @@ Robot configuration parameters:
       imu: [false|true]      # for both wheeled and reacher
       lidar: [false|true]    # for both wheeled and reacher
       camera: [false|rgb|rgbd]  # for both wheeled and reacher
-      arms_control_interface: [effort|velocity|control]   # reacher and wheeled arms
+      arms_control_interface: [effort|velocity|position]   # reacher and wheeled arms
 
 
 Note: you can create many config launch files for different configurations.
@@ -162,7 +162,7 @@ On the wheeled base, IMU and lidar are placed on the base, while cameras on the 
 - RGBD camera
 
 
-Sensors on the reacher base are not implemented at this time!
+On the reacher base, sensors are placed on the end-effector.
 
 
 

@@ -182,19 +182,19 @@
   <!-- sensors -->
   
   <xacro:if value="$(arg use_imu)">
-    <xacro:imu parent="tip_link" x="-0.1" y="0.0" z="0.152" />
+    <xacro:imu parent="tip_link" x="0.0" y="0.0" z="-0.06" />
   </xacro:if>
   
   <xacro:if value="$(arg use_lidar)">
-    <xacro:lidar parent="tip_link" x="0.1" y="0.0" z="0.155" />
+    <xacro:lidar parent="tip_link" x="0.0" y="0.0" z="0.075" />
   </xacro:if>
 
   <xacro:if value="$(arg use_rgb)">
-    <xacro:rgb parent="tip_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:rgb parent="tip_link" x="0.05" y="0.0" z="0" p="${pi/2}" />
   </xacro:if>
 
   <xacro:if value="$(arg use_rgbd)">
-    <xacro:rgbd parent="tip_link" x="0.1" y="0.0" z="0.5" />
+    <xacro:rgbd parent="tip_link" x="0.05" y="0.0" z="0" p="${pi/2}" />
   </xacro:if>
 
 
