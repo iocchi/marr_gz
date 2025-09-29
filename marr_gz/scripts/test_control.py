@@ -219,17 +219,6 @@ class TestControl(Node):
         self.publish_cmd_vel(0.0,0.0,0.5)
 
 
-    def arm_position_0(self, value=math.pi/4, tm=3):
-        p0 = [0] * self.njoints
-        p1 = [0] * self.njoints
-        p2 = [0] * self.njoints
-        for i in range(self.njoints):
-            p1[i] = value * (1 if i%2==0 else -1)
-            p2[i] = -p1[i]
-        self.publish_arm_command(p1, tm)
-        self.publish_arm_command(p2, tm)
-        self.publish_arm_command(p0, tm)
-
     def arm_position(self, value=math.pi/4, tm=3):
         p = [0] * self.njoints
         self.publish_arm_command(p, tm)
