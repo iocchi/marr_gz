@@ -21,7 +21,8 @@ fi
 
 docker rm marr_gz -fv
 
-DOCKER_RUNTIME=${DOCKER_RUNTIME} docker compose  -f $DC up -d --force-recreate -V && \
+# --force-recreate
+DOCKER_RUNTIME=${DOCKER_RUNTIME} docker compose  -f $DC up -d  --remove-orphans -V && \
 sleep 3 && \
 docker exec -it marr_gz tmux a
 
