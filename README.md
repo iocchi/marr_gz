@@ -98,14 +98,25 @@ Edit `my_launch.yaml` to configure your simulation.
 Robot configuration parameters:
 
     robot: 
-      base: [wheeled|reacher]
-      dof: [2..6]            # dof of reacher base
-      arms: [false|true]     # side arms for wheeled base
-      pantilt: [false|true]  # pan-tilt for wheeled base (camera will be mounted here)
-      imu: [false|true]      # for both wheeled and reacher
-      lidar: [false|true]    # for both wheeled and reacher
-      camera: [false|rgb|rgbd]  # for both wheeled and reacher
-      arms_control_interface: [effort|velocity|position]   # reacher and wheeled arms
+      base: wheeled|reacher
+      dof: 2..6            # dof of reacher base
+      arms: false|true     # side arms for wheeled base
+      pantilt: false|true  # pan-tilt for wheeled base (camera will be mounted here)
+      imu: false|true      # for both wheeled and reacher
+      lidar: false|true    # for both wheeled and reacher
+      camera: false|rgb|rgbd  # for both wheeled and reacher
+      arms_control_interface: effort|velocity|position   # reacher and wheeled arms
+
+
+Example:
+
+    robot: 
+      base: reacher
+      dof: 3
+      imu: false
+      lidar: false
+      camera: rgb
+      arms_control_interface: position
 
 
 Note: you can create many config launch files for different configurations.
