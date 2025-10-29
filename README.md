@@ -76,6 +76,19 @@ This option autodetects if nvidia drivers are present and uses nvidia runtime in
     cd docker
     ./run.bash
 
+
+In case of issues with running the GUI of the simulator, try sharing these files with the container
+
+    - /dev/dri/:/dev/dri/
+    - /tmp/.X11-unix:/tmp/.X11-unix
+    - $HOME/.Xauthority:/home/robot/.Xauthority
+
+or disable X11 access control, running this command from the host OS
+
+    xhost +
+
+
+
 ## Option 2: vnc 
 
     cd docker

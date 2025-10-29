@@ -30,7 +30,6 @@ services:
     volumes:
       - $PWD/../marr_gz:/home/robot/marr_gz
 
-#    privileged: true
 
 
 

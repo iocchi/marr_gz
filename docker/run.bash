@@ -19,10 +19,11 @@ if [ "$1" == "vnc" ]; then
   DC="dc_vnc.yml"
 fi
 
-docker rm marr_gz -fv
 
-# --force-recreate
+
 DOCKER_RUNTIME=${DOCKER_RUNTIME} docker compose  -f $DC up -d  --remove-orphans -V && \
 sleep 3 && \
 docker exec -it marr_gz tmux a
+
+DOCKER_RUNTIME=${DOCKER_RUNTIME} docker compose -f $DC rm -f
 

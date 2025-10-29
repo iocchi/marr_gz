@@ -13,9 +13,10 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=all
     volumes:
-      - /dev/dri/:/dev/dri/
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - $HOME/.Xauthority:/home/robot/.Xauthority
       - $PWD/../marr_gz:/home/robot/marr_gz
+
+#      - /dev/dri/:/dev/dri/
+#      - /tmp/.X11-unix:/tmp/.X11-unix
+#      - $HOME/.Xauthority:/home/robot/.Xauthority
 
 
