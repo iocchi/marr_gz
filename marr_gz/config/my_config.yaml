@@ -1,0 +1,7 @@
+robot: 
+  base: reacher
+  dof: 3
+  imu: false
+  lidar: false
+  camera: rgb
+  arms_control_interface: position
