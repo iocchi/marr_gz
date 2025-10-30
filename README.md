@@ -87,6 +87,12 @@ or disable X11 access control, running this command from the host OS
 
     xhost +
 
+To force using X11 and CPU (without nvidia drivers), use
+
+
+    cd docker
+    ./run.bash cpu
+
 
 
 ## Option 2: vnc 
