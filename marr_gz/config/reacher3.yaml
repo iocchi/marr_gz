@@ -3,5 +3,5 @@ robot:
   dof: 3
   imu: false
   lidar: false
-  camera: rgb
+  camera: false
   arms_control_interface: position
