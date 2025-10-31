@@ -11,17 +11,21 @@ elif [ "$1" == "cpu" ]; then
   echo "Using X11 and CPU"
   # force use of cpu (ignore autodetect)
 # Check for NVIDIA GPU and add GPU compose override if available
-elif nvidia-detector 2> /dev/null; then
+else
   echo "Autodetect nvidia drivers"
-  NVIDIA_DETECT=`nvidia-detector`
-  if [ "$NVIDIA_DETECT" != "None"  ]; then
-    echo "Nvidia detect: ${NVIDIA_DETECT} Using GPU support !!!"
-    GPU_OVERRIDE="-f dc.gpu.yml"
+  if nvidia-detector ; then
+    NVIDIA_DETECT=`nvidia-detector`
+    if [ "$NVIDIA_DETECT" != "None"  ]; then
+      echo "Nvidia detect: ${NVIDIA_DETECT} Using GPU support !!!"
+      GPU_OVERRIDE="-f dc.gpu.yml"
+    else
+      echo "Using X11 and CPU"
+    fi
   fi
 fi
 
 
-docker compose -f $DC $GPU_OVERRIDE up -d --remove-orphans -V && \
+USID=`id -u` docker compose -f $DC $GPU_OVERRIDE up -d --remove-orphans -V && \
 sleep 3 && \
 docker exec -it marr_gz tmux a
-docker compose -f $DC $GPU_OVERRIDE rm -f
+USID=`id -u` docker compose -f $DC $GPU_OVERRIDE rm -f

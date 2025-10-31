@@ -8,5 +8,13 @@ services:
     environment:
       - DISPLAY=$DISPLAY
       - QT_X11_NO_MITSHM=1
+      - XDG_RUNTIME_DIR=/run/user/$USID
     volumes:
       - $PWD/../marr_gz:/home/robot/marr_gz
+      - /dev/dri/:/dev/dri/
+      - /run/user/$USID:/run/user/$USID
+
+#    - $HOME/.Xauthority:/home/robot/.Xauthority
+#    - /tmp/.X11-unix:/tmp/.X11-unix
+
+
